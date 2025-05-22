@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" N queens """
+"""Solves the N-Queens problem by printing all possible solutions."""
 import sys
 
 # Check for correct number of arguments
@@ -19,19 +19,22 @@ if n < 4:
     sys.exit(1)
 
 def queens(n, row=0, rows=[], diag1=[], diag2=[]):
-    """ Generator function to find all possible queen placements """
+    """Generate all valid queen placements using backtracking."""
     if row == n:
-        # Yield the solution as a list of [row, col] pairs
+        # Yield solution as list of [row, col] pairs
         yield [[i, rows[i]] for i in range(n)]
     else:
         for col in range(n):
-            # Check if the current position is safe
-            if col not in rows and (row + col) not in diag1 and (row - col) not in diag2:
-                # Recursively try placing queens in the next rows
-                yield from queens(n, row + 1, rows + [col], diag1 + [row + col], diag2 + [row - col])
+            # Check if placing a queen at (row, col) is safe
+            if (col not in rows and
+                    row + col not in diag1 and
+                    row - col not in diag2):
+                # Recursively try next row
+                yield from queens(n, row + 1, rows + [col],
+                                 diag1 + [row + col], diag2 + [row - col])
 
 def solve(n):
-    """ Solve the N-Queens problem and print all solutions """
+    """Print all solutions to the N-Queens problem."""
     for solution in queens(n):
         print(solution)
 
